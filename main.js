@@ -90,23 +90,59 @@ const myField = new Field([
 	['░', 'O', '░'],
 	['░', '^', '░'],
   ]);
-
-  //myField.startGame();
-
+myField.startGame();
+  
+  // Creation of the initial field
+  let newField = []
   function generateField(width, height){
-	  x_position = Math.floor(Math.random() * width);
-	  y_position = Math.floor(Math.random() * height);
-	  let newField = []
+	
 	  for (let i = 0; i < height; i++){
 		  newField[i] = [];
 		  for (let j = 0; j < width; j++){
 			newField[i][j] = fieldCharacter
 		  }
 	  }
-	  console.log('x position: '+x_position+' y position: '+ y_position)
-	  newField[y_position][x_position] = hat;
-	  newField.forEach(element=> console.log(element.join('')));
   }
 
-  //Math.floor(Math.random() * max;
-  generateField(7,5);
+
+var width = 4 //Width of the field
+var height = 4 //Height of the field
+var required_positions = 5 //Number of required position in the field
+var look_random = true //Keep looking for random values
+var positions_secured = []; //Array of positions already used
+
+
+// Function required for finding the array inide arrays
+Array.prototype.containsArray = function(val) {
+    var hash = {};
+    for(var i=0; i<this.length; i++) {
+        hash[this[i]] = i;
+    }
+    return hash.hasOwnProperty(val);
+}
+
+//Creation of the fields
+while (look_random)
+  	if (positions_secured.length<required_positions){
+		var ran_x_pos = Math.floor(Math.random() * width);
+		var ran_y_pos = Math.floor(Math.random() * height);
+		var single_position = []; //Single position to create
+		single_position.push(ran_x_pos);
+		single_position.push(ran_y_pos);
+		if(!positions_secured.containsArray(single_position)){
+			positions_secured.push(single_position);
+		}
+	  } 
+	else{
+		look_random = false;
+	  };
+
+generateField(4,4);
+
+newField[positions_secured[0][0]][positions_secured[0][1]] = '\x1b[36m*\x1b[0m';
+newField[positions_secured[1][0]][positions_secured[1][1]] = '^';
+for (let i = 2; i<required_positions; i++){
+	newField[positions_secured[i][0]][positions_secured[i][1]] = 'O';
+}
+
+//newField.forEach(element=> console.log(element.join('')));
